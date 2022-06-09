@@ -1,0 +1,66 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://Card/Card.tscn" type="PackedScene" id=1]
+[ext_resource path="res://PopUpUi/MenuButton.tscn" type="PackedScene" id=2]
+[ext_resource path="res://Battlefield/Battlefield.gd" type="Script" id=3]
+[ext_resource path="res://PopUpUi/PressTurnSymbol.tscn" type="PackedScene" id=4]
+
+[node name="Battlefield" type="Node2D"]
+script = ExtResource( 3 )
+
+[node name="Players" type="Node2D" parent="."]
+position = Vector2( -4, -16 )
+
+[node name="Card" parent="Players" instance=ExtResource( 1 )]
+position = Vector2( 64, 441 )
+
+[node name="Card2" parent="Players" instance=ExtResource( 1 )]
+position = Vector2( 191, 438 )
+
+[node name="Card3" parent="Players" instance=ExtResource( 1 )]
+position = Vector2( 319, 439 )
+
+[node name="Card4" parent="Players" instance=ExtResource( 1 )]
+position = Vector2( 447, 437 )
+
+[node name="Enemies" type="Node2D" parent="."]
+
+[node name="Card" parent="Enemies" instance=ExtResource( 1 )]
+position = Vector2( 63, 166 )
+this_type = 1
+
+[node name="Card2" parent="Enemies" instance=ExtResource( 1 )]
+position = Vector2( 190, 163 )
+this_type = 1
+
+[node name="Card3" parent="Enemies" instance=ExtResource( 1 )]
+position = Vector2( 318, 164 )
+this_type = 1
+
+[node name="Card4" parent="Enemies" instance=ExtResource( 1 )]
+position = Vector2( 446, 162 )
+this_type = 1
+
+[node name="UI" type="Control" parent="."]
+margin_right = 40.0
+margin_bottom = 40.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="MenuButtons" parent="UI" instance=ExtResource( 2 )]
+margin_left = 4.0
+margin_top = 528.0
+margin_right = 164.0
+margin_bottom = 598.0
+
+[node name="PressTurnSymbol" parent="UI" instance=ExtResource( 4 )]
+margin_left = 306.0
+margin_top = 552.0
+margin_right = 370.0
+margin_bottom = 616.0
+
+[node name="EnemyWait" type="Timer" parent="."]
+wait_time = 2.0
+
+[connection signal="timeout" from="EnemyWait" to="." method="_on_EnemyWait_timeout"]

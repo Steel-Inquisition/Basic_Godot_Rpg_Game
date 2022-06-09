@@ -1,0 +1,141 @@
+[gd_scene load_steps=10 format=2]
+
+[ext_resource path="res://icon.png" type="Texture" id=1]
+[ext_resource path="res://Images/demons.png" type="Texture" id=2]
+[ext_resource path="res://Card/CardImage.gd" type="Script" id=3]
+[ext_resource path="res://Card/Card.gd" type="Script" id=4]
+[ext_resource path="res://Attacks/Stab.tscn" type="PackedScene" id=5]
+
+[sub_resource type="AtlasTexture" id=5]
+atlas = ExtResource( 2 )
+region = Rect2( 0, 0, 67, 91 )
+
+[sub_resource type="AtlasTexture" id=6]
+atlas = ExtResource( 2 )
+region = Rect2( 67, 0, 67, 91 )
+
+[sub_resource type="SpriteFrames" id=4]
+animations = [ {
+"frames": [ SubResource( 5 ), SubResource( 6 ) ],
+"loop": true,
+"name": "default",
+"speed": 5.0
+} ]
+
+[sub_resource type="RectangleShape2D" id=7]
+extents = Vector2( 64.5, 128 )
+
+[node name="Card" type="Area2D"]
+script = ExtResource( 4 )
+
+[node name="PlayerView" type="Control" parent="."]
+margin_right = 40.0
+margin_bottom = 40.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Background" type="Sprite" parent="PlayerView"]
+self_modulate = Color( 0, 0, 0, 1 )
+position = Vector2( 0, -30 )
+scale = Vector2( 2, 4 )
+texture = ExtResource( 1 )
+
+[node name="Name" type="Label" parent="PlayerView"]
+margin_left = -56.0
+margin_top = -143.0
+margin_right = 79.0
+margin_bottom = -129.0
+text = "Hello  There"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="CardImage" type="AnimatedSprite" parent="."]
+position = Vector2( 0, -54 )
+scale = Vector2( 1.5, 1.5 )
+frames = SubResource( 4 )
+frame = 1
+playing = true
+script = ExtResource( 3 )
+
+[node name="Bars" type="Control" parent="."]
+margin_right = 40.0
+margin_bottom = 40.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HealthBar" type="ProgressBar" parent="Bars"]
+modulate = Color( 0, 1, 0.0156863, 1 )
+margin_left = -42.0
+margin_top = 28.0
+margin_right = 48.0
+margin_bottom = 42.0
+rect_scale = Vector2( 1, 0.5 )
+value = 100.0
+percent_visible = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Hp" type="Label" parent="Bars"]
+margin_left = -39.0
+margin_top = 21.0
+margin_right = 7.0
+margin_bottom = 35.0
+rect_pivot_offset = Vector2( -168, -132 )
+text = "Hp:100"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="MpBar" type="ProgressBar" parent="Bars"]
+modulate = Color( 0, 0.552941, 1, 1 )
+margin_left = -42.0
+margin_top = 47.0
+margin_right = 48.0
+margin_bottom = 61.0
+rect_scale = Vector2( 1, 0.5 )
+value = 100.0
+percent_visible = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Mp" type="Label" parent="Bars"]
+margin_left = -39.0
+margin_top = 40.0
+margin_right = 9.0
+margin_bottom = 54.0
+rect_pivot_offset = Vector2( -168, -132 )
+text = "Mp:100"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Attacks" type="Node2D" parent="."]
+position = Vector2( -12, 29 )
+
+[node name="Stab" parent="Attacks" instance=ExtResource( 5 )]
+position = Vector2( -26, 19 )
+damage = 6
+accuracy = 50
+
+[node name="Rump" parent="Attacks" instance=ExtResource( 5 )]
+position = Vector2( -26, 19 )
+attack_name = "Rump"
+damage = 5
+accuracy = -10
+hits = 3
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2( 0.5, -30 )
+shape = SubResource( 7 )
+
+[node name="DeathTimer" type="Timer" parent="."]
+wait_time = 1.5
+
+[connection signal="input_event" from="." to="." method="_on_Card_input_event"]
+[connection signal="frame_changed" from="CardImage" to="CardImage" method="_on_CardImage_frame_changed"]
+[connection signal="timeout" from="DeathTimer" to="." method="_on_DeathTimer_timeout"]
